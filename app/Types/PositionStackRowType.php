@@ -6,7 +6,7 @@ class PositionStackRowType
 {
 
     private $latitude = null; //double
-    private $longitude  = null; //double
+    private $longitude = null; //double
     private $label = null; //String
     private $name = null; //String
     private $type = null; //String
@@ -22,8 +22,9 @@ class PositionStackRowType
     private $country_code = null; //String
     private $map_url = null;
 
-    public function __construct(array $item) {
-        foreach ($item as $key=>$value){
+    public function __construct(array $item)
+    {
+        foreach ($item as $key => $value) {
             $this->{$key} = $value;
         }
     }
@@ -31,17 +32,18 @@ class PositionStackRowType
     /**
      * @return mixed
      */
-    public function getLatitude() {
+    public function getLatitude()
+    {
         return $this->latitude;
     }
 
     /**
      * @return mixed
      */
-    public function getLongitude() {
+    public function getLongitude()
+    {
         return $this->longitude;
     } //String
-
 
 
 }

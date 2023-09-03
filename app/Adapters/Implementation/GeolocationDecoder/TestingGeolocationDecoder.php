@@ -13,8 +13,7 @@ class TestingGeolocationDecoder implements IGeolocationDecoder
         $geolocationType = new GeolocationType();
         $geolocationType
             ->setLatitude("30.033333")
-            ->setLongitude("31.233334")
-        ;
+            ->setLongitude("31.233334");
         return $geolocationType;
     }
 

@@ -11,13 +11,15 @@ class CsvHelperTest extends TestCase
     public function test_arrayToCsv(): void
     {
         $headers = [
-            "name", "age", "experience_years"
+            "name",
+            "age",
+            "experience_years"
         ];
 
         $data = [
-            ["testname","28","7"],
-            ["testname2","28","8"],
-            ["testname3","28","10"],
+            ["testname", "28", "7"],
+            ["testname2", "28", "8"],
+            ["testname3", "28", "10"],
         ];
 
         $filePath = storage_path("csv_files/test/test_csv_arrayToCsv.csv");
@@ -37,7 +39,6 @@ class CsvHelperTest extends TestCase
         $this->assertNotEmpty($res);
         $this->assertCount(3, $res[0]);
     }
-
 
 
 }

@@ -24,12 +24,11 @@ class AddressesService implements IAddressesService
          */
         $addresses = CsvHelper::csvConverted(storage_path('csv_files/hq_addresses.csv'), '-', PlaceType::class);
 
-        foreach ($addresses as $address){
+        foreach ($addresses as $address) {
             $geolocationType = $geocoder->geocode($address->getPlaceAddress());
             $address
                 ->setPlaceLatitude($geolocationType->getLatitude())
-                ->setPlaceLongitude($geolocationType->getLongitude())
-            ;
+                ->setPlaceLongitude($geolocationType->getLongitude());
         }
 
         //save the decoded address to another file
@@ -53,16 +52,16 @@ class AddressesService implements IAddressesService
 
     private function getAddressFromArray(array $addresses, string $placeName): PlaceType
     {
-        $place = array_filter($addresses, function($address) use($placeName){
+        $place = array_filter($addresses, function ($address) use ($placeName) {
             /**
              * @var $address PlaceType
              */
-            if ($placeName == $address->getPlaceName()){
+            if ($placeName == $address->getPlaceName()) {
                 return $address;
             }
         });
 
-        if(!is_array($place) || count($place) == 0){
+        if (!is_array($place) || count($place) == 0) {
             throw new Exception("object is not found");
         }
 
@@ -74,11 +73,11 @@ class AddressesService implements IAddressesService
      */
     private function excludeAddressFromArray(array $addresses, string $placeName): array
     {
-        $places = array_filter($addresses, function($address) use($placeName){
+        $places = array_filter($addresses, function ($address) use ($placeName) {
             /**
              * @var $address PlaceType
              */
-            if ($placeName != $address->getPlaceName()){
+            if ($placeName != $address->getPlaceName()) {
                 return $address;
             }
         });
@@ -86,7 +85,13 @@ class AddressesService implements IAddressesService
         return $places;
     }
 
-    private function getDistanceBetweenTwoPoints($latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo, $earthRadius = 6371000) {
+    private function getDistanceBetweenTwoPoints(
+        $latitudeFrom,
+        $longitudeFrom,
+        $latitudeTo,
+        $longitudeTo,
+        $earthRadius = 6371000
+    ) {
         // convert from degrees to radians
         $latFrom = deg2rad($latitudeFrom);
         $lonFrom = deg2rad($longitudeFrom);
@@ -96,9 +101,13 @@ class AddressesService implements IAddressesService
         $latDelta = $latTo - $latFrom;
         $lonDelta = $lonTo - $lonFrom;
 
-        $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) +
-                cos($latFrom) * cos($latTo) * pow(sin($lonDelta / 2), 2)));
-        return round(($angle * $earthRadius)/1000,2);
+        $angle = 2 * asin(
+                sqrt(
+                    pow(sin($latDelta / 2), 2) +
+                    cos($latFrom) * cos($latTo) * pow(sin($lonDelta / 2), 2)
+                )
+            );
+        return round(($angle * $earthRadius) / 1000, 2);
     }
 
     /**
@@ -109,14 +118,14 @@ class AddressesService implements IAddressesService
     {
         $printArr = [];
         $counter = 1;
-        foreach ($addresses as $key=>$address){
-            if ($address->getDistance() == -1){
+        foreach ($addresses as $key => $address) {
+            if ($address->getDistance() == -1) {
                 //exclude wrong results
                 continue;
             }
             $printArr[] = [
                 $counter++,
-                $address->getDistance()." KM",
+                $address->getDistance() . " KM",
                 $address->getPlaceName(),
                 $address->getPlaceAddress()
             ];
@@ -125,18 +134,22 @@ class AddressesService implements IAddressesService
         return $printArr;
     }
 
-    public function calculateDistanceAndGenerateSortedFile(): array {
+    public function calculateDistanceAndGenerateSortedFile(): array
+    {
         /**
          * @var $addresses PlaceType[]
          */
-        $addresses = CsvHelper::csvConverted(storage_path('csv_files/generated_files/hq_addresses_lat_lng.csv'), '-', PlaceType::class);
+        $addresses = CsvHelper::csvConverted(
+            storage_path('csv_files/generated_files/hq_addresses_lat_lng.csv'),
+            '-',
+            PlaceType::class
+        );
         $AdchieveHQPlace = $this->getAddressFromArray($addresses, "Adchieve HQ");
-        $addresses       = $this->excludeAddressFromArray($addresses, "Adchieve HQ");
+        $addresses = $this->excludeAddressFromArray($addresses, "Adchieve HQ");
 
-        foreach ($addresses as $address)
-        {
+        foreach ($addresses as $address) {
             $distance = -1;
-            if (!empty($address->getPlaceLatitude()) && !empty($address->getPlaceLongitude())){
+            if (!empty($address->getPlaceLatitude()) && !empty($address->getPlaceLongitude())) {
                 $distance = $this->getDistanceBetweenTwoPoints(
                     $AdchieveHQPlace->getPlaceLatitude(),
                     $AdchieveHQPlace->getPlaceLongitude(),
@@ -148,7 +161,9 @@ class AddressesService implements IAddressesService
             $address->setDistance($distance);
         }
 
-        usort($addresses, function($a, $b) {return strcmp($a->getDistance(), $b->getDistance());});
+        usort($addresses, function ($a, $b) {
+            return strcmp($a->getDistance(), $b->getDistance());
+        });
         $addresses = $this->printedArr($addresses);
 
         $headers = ["Sortnumber", "Distance", "Name", "Address"];

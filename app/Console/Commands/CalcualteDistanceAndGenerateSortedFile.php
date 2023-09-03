@@ -32,9 +32,8 @@ class CalcualteDistanceAndGenerateSortedFile extends Command
         $addressesService = app(IAddressesService::class);
         $addresses = $addressesService->calculateDistanceAndGenerateSortedFile();
 
-        foreach ($addresses as $address){
-            $this->info(implode(", ",$address));
+        foreach ($addresses as $address) {
+            $this->info(implode(", ", $address));
         }
-
     }
 }

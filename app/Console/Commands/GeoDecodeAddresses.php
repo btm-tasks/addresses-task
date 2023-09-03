@@ -26,12 +26,10 @@ class GeoDecodeAddresses extends Command
      */
     public function handle()
     {
-
         /**
          * @var $addressesService IAddressesService
          */
         $addressesService = app(IAddressesService::class);
         $addressesService->getLatLngForAddressesAndSaveOutput();
-
     }
 }

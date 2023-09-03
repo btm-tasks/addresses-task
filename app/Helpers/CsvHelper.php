@@ -18,10 +18,9 @@ class CsvHelper
                 if (!$header) {
                     $header = $row;
                 } else {
-                    if ($class != null){
+                    if ($class != null) {
                         $data[] = new $class(array_combine($header, $row));
-                    }
-                    else{
+                    } else {
                         $data[] = array_combine($header, $row);
                     }
                 }
@@ -35,7 +34,7 @@ class CsvHelper
     {
         $f = fopen($fileName, 'w');
 
-        foreach ($array as $key=>$item) {
+        foreach ($array as $key => $item) {
             if (is_object($item)) {
                 $item = (array)$item;
             }

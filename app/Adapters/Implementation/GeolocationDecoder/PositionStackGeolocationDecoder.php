@@ -15,7 +15,8 @@ class PositionStackGeolocationDecoder implements IGeolocationDecoder
 
     private $apiKey;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->apiKey = env("POSITIONSTACK_KEY");
     }
 
@@ -23,7 +24,7 @@ class PositionStackGeolocationDecoder implements IGeolocationDecoder
     {
         $geolocationType = new GeolocationType();
 
-        try{
+        try {
             $res = Http::get('http://api.positionstack.com/v1/forward', [
                 'access_key' => $this->apiKey,
                 'query' => $address
@@ -32,22 +33,22 @@ class PositionStackGeolocationDecoder implements IGeolocationDecoder
             $res = $res->getBody()->getContents();
             $res = json_decode($res, true);
 
-            if (!isset($res['data']) || !isset($res['data'][0])){
-                throw new InvalidPositionStackResponse(json_encode([
-                    "address" => $address,
-                    "message" =>"invalid response",
-                    "response" => $res,
-                ]));
+            if (!isset($res['data']) || !isset($res['data'][0])) {
+                throw new InvalidPositionStackResponse(
+                    json_encode([
+                        "address" => $address,
+                        "message" => "invalid response",
+                        "response" => $res,
+                    ])
+                );
             }
 
             $res = new PositionStackRowType($res['data'][0]);
 
             $geolocationType
                 ->setLatitude($res->getLatitude())
-                ->setLongitude($res->getLongitude())
-            ;
-        }
-        catch (\Throwable $exception){
+                ->setLongitude($res->getLongitude());
+        } catch (\Throwable $exception) {
             //in real life scenarios, I send the entire error object to slack
             Log::error($exception->getMessage());
         }
