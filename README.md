@@ -1,5 +1,6 @@
 # Installation
 - run 
+- ```cp .env.example .env```
 - ```docker-compose build && docker-compose up -d```
 - then run
 - ```docker exec -it addresses-task-php-1 bash```
