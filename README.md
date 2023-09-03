@@ -2,7 +2,7 @@
 - run 
 - ```docker-compose build && docker-compose up -d```
 - then run
-- ```docker exec -it addresses_task-php-1 bash```
+- ```docker exec -it addresses-task-php-1 bash```
 - you can now run 
 - to install the dependencies
   - ```composer install```
