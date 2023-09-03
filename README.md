@@ -2,7 +2,7 @@
 - run 
 - ```cp .env.example .env```
 - ```docker-compose build && docker-compose up -d```
-- then run
+- then run, the container name might be changes, just run docker container ls and you'll find put
 - ```docker exec -it addresses-task-php-1 bash```
 - you can now run 
 - to install the dependencies
