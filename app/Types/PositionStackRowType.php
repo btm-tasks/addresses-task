@@ -5,22 +5,22 @@ namespace App\Types;
 class PositionStackRowType
 {
 
-    private $latitude = null; //double
-    private $longitude = null; //double
-    private $label = null; //String
-    private $name = null; //String
-    private $type = null; //String
-    private $number = null; //String
-    private $street = null; //String
-    private $postal_code = null; //String
-    private $confidence = null; //int
-    private $region = null; //String
-    private $region_code = null; //String
-    private $administrative_area = null; //array( undefined )
-    private $neighbourhood = null; //String
-    private $country = null; //String
-    private $country_code = null; //String
-    private $map_url = null;
+    private ?float $latitude = null;
+    private ?float $longitude = null;
+    private ?string $label = null;
+    private ?string $name = null;
+    private ?string $type = null;
+    private ?string $number = null;
+    private ?string $street = null;
+    private ?string $postal_code = null;
+    private ?int $confidence = null;
+    private ?string $region = null;
+    private ?string $region_code = null;
+    private ?array $administrative_area = null;
+    private ?string $neighbourhood = null;
+    private ?string $country = null;
+    private ?string $country_code = null;
+    private ?string $map_url = null;
 
     public function __construct(array $item)
     {
@@ -30,20 +30,133 @@ class PositionStackRowType
     }
 
     /**
-     * @return mixed
+     * @return float|null
      */
-    public function getLatitude()
+    public function getLatitude(): ?float
     {
         return $this->latitude;
     }
 
     /**
-     * @return mixed
+     * @return float|null
      */
-    public function getLongitude()
+    public function getLongitude(): ?float
     {
         return $this->longitude;
-    } //String
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getLabel(): ?string
+    {
+        return $this->label;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getNumber(): ?string
+    {
+        return $this->number;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getStreet(): ?string
+    {
+        return $this->street;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPostalCode(): ?string
+    {
+        return $this->postal_code;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getConfidence(): ?int
+    {
+        return $this->confidence;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getRegion(): ?string
+    {
+        return $this->region;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getRegionCode(): ?string
+    {
+        return $this->region_code;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getAdministrativeArea(): ?array
+    {
+        return $this->administrative_area;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getNeighbourhood(): ?string
+    {
+        return $this->neighbourhood;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCountry(): ?string
+    {
+        return $this->country;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCountryCode(): ?string
+    {
+        return $this->country_code;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getMapUrl(): ?string
+    {
+        return $this->map_url;
+    }
+
 
 
 }

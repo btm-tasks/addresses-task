@@ -111,10 +111,11 @@ class AddressesService implements IAddressesService
     }
 
     /**
+     * pick only some attributes from PlaceType per object and return as array
      * @param PlaceType[] $addresses
      * @return array
      */
-    private function printedArr(array $addresses): array
+    private function reformatAddressesArray(array $addresses): array
     {
         $printArr = [];
         $counter = 1;
@@ -162,9 +163,9 @@ class AddressesService implements IAddressesService
         }
 
         usort($addresses, function ($a, $b) {
-            return strcmp($a->getDistance(), $b->getDistance());
+            return $a->getDistance() > $b->getDistance();
         });
-        $addresses = $this->printedArr($addresses);
+        $addresses = $this->reformatAddressesArray($addresses);
 
         $headers = ["Sortnumber", "Distance", "Name", "Address"];
         CsvHelper::arrayToCsv(storage_path('csv_files/generated_files/distances.csv'), $addresses, $headers);

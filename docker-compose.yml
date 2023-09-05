@@ -18,8 +18,8 @@ services:
             - "8000:8000"
         depends_on:
             - database
-            - redis
         tty: true
+        network_mode: host
 
     # Database Server
     database:

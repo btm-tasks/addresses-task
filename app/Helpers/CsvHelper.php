@@ -5,7 +5,7 @@ namespace App\Helpers;
 class CsvHelper
 {
 
-    public static function csvConverted($fileName, $delimiter, $class = null)
+    public static function csvConverted(string $fileName, string $delimiter, string $class = null)
     {
         if (!file_exists($fileName) || !is_readable($fileName)) {
             return false;
@@ -13,6 +13,7 @@ class CsvHelper
 
         $header = null;
         $data = array();
+
         if (($handle = fopen($fileName, 'r')) !== false) {
             while (($row = fgetcsv($handle, 1000, $delimiter)) !== false) {
                 if (!$header) {
@@ -27,10 +28,11 @@ class CsvHelper
             }
             fclose($handle);
         }
+
         return $data;
     }
 
-    public static function arrayToCsv($fileName, $array, $headers)
+    public static function arrayToCsv(string $fileName, array $array, array $headers): bool
     {
         $f = fopen($fileName, 'w');
 

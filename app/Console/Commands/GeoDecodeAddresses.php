@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Exceptions\CustomExceptionHandler;
 use App\Services\IAddressesService;
 use Illuminate\Console\Command;
 
@@ -26,10 +27,14 @@ class GeoDecodeAddresses extends Command
      */
     public function handle()
     {
-        /**
-         * @var $addressesService IAddressesService
-         */
-        $addressesService = app(IAddressesService::class);
-        $addressesService->getLatLngForAddressesAndSaveOutput();
+        try {
+            /**
+             * @var $addressesService IAddressesService
+             */
+            $addressesService = app(IAddressesService::class);
+            $addressesService->getLatLngForAddressesAndSaveOutput();
+        } catch (CustomExceptionHandler $exception) {
+            $this->output->error($exception->getMessage());
+        }
     }
 }

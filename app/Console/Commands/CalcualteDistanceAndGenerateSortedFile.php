@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Exceptions\CustomExceptionHandler;
 use App\Services\IAddressesService;
 use Illuminate\Console\Command;
 
@@ -26,14 +27,20 @@ class CalcualteDistanceAndGenerateSortedFile extends Command
      */
     public function handle()
     {
-        /**
-         * @var $addressesService IAddressesService
-         */
-        $addressesService = app(IAddressesService::class);
-        $addresses = $addressesService->calculateDistanceAndGenerateSortedFile();
+        try {
+            /**
+             * @var $addressesService IAddressesService
+             */
+            $addressesService = app(IAddressesService::class);
+            $addresses = $addressesService->calculateDistanceAndGenerateSortedFile();
 
-        foreach ($addresses as $address) {
-            $this->info(implode(", ", $address));
+            foreach ($addresses as $address) {
+                $this->info(implode(", ", $address));
+            }
         }
+        catch (CustomExceptionHandler $exception){
+            $this->output->error($exception->getMessage());
+        }
+
     }
 }

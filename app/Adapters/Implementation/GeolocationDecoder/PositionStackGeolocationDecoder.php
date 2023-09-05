@@ -4,7 +4,7 @@ namespace App\Adapters\Implementation\GeolocationDecoder;
 
 
 use App\Adapters\IGeolocationDecoder;
-use App\Exceptions\InvalidPositionStackResponse;
+use App\Exceptions\CustomExceptionHandler;
 use App\Types\GeolocationType;
 use App\Types\PositionStackRowType;
 use Illuminate\Support\Facades\Http;
@@ -34,13 +34,20 @@ class PositionStackGeolocationDecoder implements IGeolocationDecoder
             $res = json_decode($res, true);
 
             if (!isset($res['data']) || !isset($res['data'][0])) {
-                throw new InvalidPositionStackResponse(
+                Log::error(
+                    "invalid data from position slack - ".
                     json_encode([
                         "address" => $address,
                         "message" => "invalid response",
                         "response" => $res,
                     ])
                 );
+
+                $geolocationType
+                ->setLatitude(0)
+                ->setLongitude(0);
+
+                return $geolocationType;
             }
 
             $res = new PositionStackRowType($res['data'][0]);
@@ -49,8 +56,7 @@ class PositionStackGeolocationDecoder implements IGeolocationDecoder
                 ->setLatitude($res->getLatitude())
                 ->setLongitude($res->getLongitude());
         } catch (\Throwable $exception) {
-            //in real life scenarios, I send the entire error object to slack
-            Log::error($exception->getMessage());
+            throw new CustomExceptionHandler("Error while using position slack ".$exception->getMessage(), 506, $exception);
         }
 
         return $geolocationType;

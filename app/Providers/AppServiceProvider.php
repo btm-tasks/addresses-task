@@ -17,7 +17,11 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(IAddressesService::class, AddressesService::class);
-        $this->app->bind(IGeolocationDecoder::class, PositionStackGeolocationDecoder::class);
+
+        //PositionStack has error at the api itself, service is not avilable and i tried multiple keys
+        //so i faked it
+        //$this->app->bind(IGeolocationDecoder::class, PositionStackGeolocationDecoder::class);
+        $this->app->bind(IGeolocationDecoder::class, TestingGeolocationDecoder::class);
 
         //it is like mocking
         if (env("APP_ENV") == "testing"){
